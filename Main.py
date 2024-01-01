@@ -45,7 +45,6 @@ class InteractiveNodeSystem:
 
     self.nodes = []
     self.selected_nodes = []
-    self.moving = False
 
   def clear_selected_nodes(self, thing=None):
     self.selected_nodes.clear()
