@@ -38,12 +38,14 @@ class InteractiveNodeSystem:
     self.canvas = tk.Canvas(root, width=800, height=600, bg="white")
     self.canvas.pack(expand=tk.YES, fill=tk.BOTH)
     self.canvas.bind("<Button-1>", self.create_node)
-    self.canvas.bind("<Button2-Motion>", self.drag_node)
+    self.canvas.bind("<Button-2>", self.grab_node)
+    self.canvas.bind("<Button2-Motion>", self.drag_node, '+')
     self.canvas.bind("<ButtonRelease-2>", self.clear_selected_nodes)
     self.canvas.bind("<Button-3>", self.connect_nodes)
 
     self.nodes = []
     self.selected_nodes = []
+    self.moving = False
 
   def clear_selected_nodes(self, thing=None):
     self.selected_nodes.clear()
@@ -53,13 +55,12 @@ class InteractiveNodeSystem:
     self.nodes.append(new_node)
     #self.redraw_all()
 
-  def drag_node(self, event):
+  def grab_node(self, event):
     self.clear_selected_nodes()
     self.selected_nodes.append(self.get_clicked_node(event))
 
-    if self.selected_nodes[0] != None:
-      self.selected_nodes[0].move(event.x, event.y)
-      #self.redraw_all()
+  def drag_node(self, event):
+    self.selected_nodes[0].move(event.x, event.y)
 
   def connect_nodes(self, event):
 
