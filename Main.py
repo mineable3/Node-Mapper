@@ -5,19 +5,24 @@ from math import sqrt
 class Node:
   def __init__(self, canvas, x, y):
     self.canvas = canvas
+    self.x = x
+    self.y = y
     self.id = canvas.create_oval(x - 20, y - 20, x + 20, y + 20, fill="blue", tags="node")
-    self.connections = set()
+    self.connections = list()
 
   def move(self, x, y):
+    self.x = x
+    self.y = y
     self.canvas.coords(self.id, x - 20, y - 20, x + 20, y + 20)
 
   def connect(self, other):
-    self.connections.add(other)
-    other.connections.add(self)
+    self.connections.append(other)
+    other.connections.append(self)
     self.canvas.create_line(self.get_position(), other.get_position(), fill="black", width=2, tags="line")
 
   def get_position(self):
-    return self.canvas.coords(self.id)[0] + 20, self.canvas.coords(self.id)[1] + 20
+    return self.x, self.y
+
 
 
 class InteractiveNodeSystem:
@@ -28,15 +33,28 @@ class InteractiveNodeSystem:
     self.canvas = tk.Canvas(root, width=800, height=600, bg="white")
     self.canvas.pack(expand=tk.YES, fill=tk.BOTH)
     self.canvas.bind("<Button-1>", self.create_node)
+    self.canvas.bind("<Button2-Motion>", self.drag_node)
+    self.canvas.bind("<ButtonRelease-2>", self.clear_selected_nodes)
     self.canvas.bind("<Button-3>", self.connect_nodes)
-    self.canvas.bind("<Button-2>", self.remove_node)
 
     self.nodes = []
     self.selected_nodes = []
 
+  def clear_selected_nodes(self, event):
+    self.selected_nodes.clear()
+
   def create_node(self, event):
     new_node = Node(self.canvas, event.x, event.y)
     self.nodes.append(new_node)
+    self.redraw_all()
+
+  def drag_node(self, event):
+    if self.selected_nodes.__len__() == 0:
+      self.selected_nodes.append(self.get_clicked_node(event))
+    print(self.selected_nodes.__len__())
+    if self.selected_nodes[0] != None:
+      self.selected_nodes[0].move(event.x, event.y)
+      self.redraw_all()
 
   def connect_nodes(self, event):
     clicked_node = self.get_clicked_node(event)
@@ -50,16 +68,20 @@ class InteractiveNodeSystem:
     for node in self.nodes:
       coords = node.get_position()
       distance = sqrt((event.x - coords[0]) ** 2 + (event.y - coords[1]) ** 2)
-      if distance < 20:  # You can adjust the distance threshold as needed
+      if distance < 20:
+        self.selected_nodes.append(node)
         return node
     return None
 
-  def remove_node(self, event):
+  def redraw_all(self):
+    self.canvas.delete("all")
     for node in self.nodes:
-      coords = node.get_position()
-      distance = sqrt((event.x - coords[0]) ** 2 + (event.y - coords[1]) ** 2)
-      if distance < 20:  # You can adjust the distance threshold as needed
-        self.nodes.remove(node)
+      self.canvas.create_oval(node.get_position()[0] - 20, node.get_position()[1] - 20,
+                   node.get_position()[0] + 20, node.get_position()[1] + 20,
+                   fill="blue", tags="node")
+      for connected_node in node.connections:
+        self.canvas.create_line(node.get_position(), connected_node.get_position(),
+                    fill="black", width=2, tags="line")
 
   def mainloop(self):
     self.root.mainloop()
