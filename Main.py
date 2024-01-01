@@ -6,19 +6,26 @@ class Node:
     self.canvas = canvas
     self.x = x
     self.y = y
-    self.id = canvas.create_oval(x - 20, y - 20, x + 20, y + 20, fill="blue", tags="node")
+    self.body_id = canvas.create_oval(x - 20, y - 20, x + 20, y + 20, fill="blue", tags="node")
     self.connections = list()
+    self.connection_ids = list()
 
   def move(self, x, y):
     self.x = x
     self.y = y
-    self.canvas.coords(self.id, x - 20, y - 20, x + 20, y + 20)
-    #self.canvas.coords(self.id, )
+    self.canvas.coords(self.body_id, x - 20, y - 20, x + 20, y + 20)
+
+    i = 0
+    for other in self.connections:
+      self.canvas.coords(self.connection_ids[i], x, y, other.x, other.y)
+      i += 1
 
   def connect(self, other):
+    id = self.canvas.create_line(self.get_position(), other.get_position(), fill="black", width=2, tags="line")
     self.connections.append(other)
+    self.connection_ids.append(id)
     other.connections.append(self)
-    self.canvas.create_line(self.get_position(), other.get_position(), fill="black", width=2, tags="line")
+    other.connection_ids.append(id)
 
   def get_position(self):
     return self.x, self.y
