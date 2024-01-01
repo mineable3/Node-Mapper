@@ -1,7 +1,6 @@
 import tkinter as tk
 from math import sqrt
 
-
 class Node:
   def __init__(self, canvas, x, y):
     self.canvas = canvas
@@ -23,8 +22,6 @@ class Node:
 
   def get_position(self):
     return self.x, self.y
-
-
 
 class InteractiveNodeSystem:
   def __init__(self, root):
@@ -59,25 +56,16 @@ class InteractiveNodeSystem:
 
   def connect_nodes(self, event):
 
-    print(len(self.selected_nodes))
     clicked_node = self.get_clicked_node(event)
-
     if clicked_node:
-      print(clicked_node)
-      print(self.selected_nodes)
       self.selected_nodes.append(clicked_node)
-      print(self.selected_nodes)
 
       if len(self.selected_nodes) == 2 and self.selected_nodes[0] != self.selected_nodes[1]:
         self.selected_nodes[0].connect(self.selected_nodes[1])
-        print("nodes clearing")
         self.selected_nodes = []
 
-      if(len(self.selected_nodes) >= 3):
-        print("poped")
+      if(len(self.selected_nodes) > 1):
         self.selected_nodes.pop(0)
-
-    print(len(self.selected_nodes))
 
   def get_clicked_node(self, event):
     for node in self.nodes:
@@ -99,7 +87,6 @@ class InteractiveNodeSystem:
 
   def mainloop(self):
     self.root.mainloop()
-
 
 if __name__ == "__main__":
   root = tk.Tk()
