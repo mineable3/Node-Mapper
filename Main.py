@@ -60,7 +60,8 @@ class InteractiveNodeSystem:
     self.selected_nodes.append(self.get_clicked_node(event))
 
   def drag_node(self, event):
-    self.selected_nodes[0].move(event.x, event.y)
+    if self.selected_nodes[0] != None:
+      self.selected_nodes[0].move(event.x, event.y)
 
   def connect_nodes(self, event):
 
