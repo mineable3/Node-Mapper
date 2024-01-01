@@ -14,6 +14,7 @@ class Node:
     self.x = x
     self.y = y
     self.canvas.coords(self.id, x - 20, y - 20, x + 20, y + 20)
+    #self.canvas.coords(self.id, )
 
   def connect(self, other):
     self.connections.append(other)
@@ -40,36 +41,49 @@ class InteractiveNodeSystem:
     self.nodes = []
     self.selected_nodes = []
 
-  def clear_selected_nodes(self, event):
+  def clear_selected_nodes(self, thing=None):
     self.selected_nodes.clear()
 
   def create_node(self, event):
     new_node = Node(self.canvas, event.x, event.y)
     self.nodes.append(new_node)
-    self.redraw_all()
+    #self.redraw_all()
 
   def drag_node(self, event):
-    if self.selected_nodes.__len__() == 0:
-      self.selected_nodes.append(self.get_clicked_node(event))
-    print(self.selected_nodes.__len__())
+    self.clear_selected_nodes()
+    self.selected_nodes.append(self.get_clicked_node(event))
+
     if self.selected_nodes[0] != None:
       self.selected_nodes[0].move(event.x, event.y)
-      self.redraw_all()
+      #self.redraw_all()
 
   def connect_nodes(self, event):
+
+    print(len(self.selected_nodes))
     clicked_node = self.get_clicked_node(event)
+
     if clicked_node:
+      print(clicked_node)
+      print(self.selected_nodes)
       self.selected_nodes.append(clicked_node)
-      if len(self.selected_nodes) == 2:
+      print(self.selected_nodes)
+
+      if len(self.selected_nodes) == 2 and self.selected_nodes[0] != self.selected_nodes[1]:
         self.selected_nodes[0].connect(self.selected_nodes[1])
+        print("nodes clearing")
         self.selected_nodes = []
+
+      if(len(self.selected_nodes) >= 3):
+        print("poped")
+        self.selected_nodes.pop(0)
+
+    print(len(self.selected_nodes))
 
   def get_clicked_node(self, event):
     for node in self.nodes:
       coords = node.get_position()
       distance = sqrt((event.x - coords[0]) ** 2 + (event.y - coords[1]) ** 2)
       if distance < 20:
-        self.selected_nodes.append(node)
         return node
     return None
 
