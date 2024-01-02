@@ -3,7 +3,7 @@ import numpy as np
 from math import sqrt
 
 class Node:
-  def __init__(self, canvas, x, y):
+  def __init__(self, canvas: tk.Canvas, x: int, y: int):
     self.canvas = canvas
     self.coords = np.array([x, y])
     self.x = x
@@ -12,7 +12,7 @@ class Node:
     self.connections = list()
     self.connection_ids = list()
 
-  def move(self, x, y):
+  def move(self, x: int, y: int):
     self.coords[0] = x
     self.coords[1] = y
     self.canvas.coords(self.body_id, x - 20, y - 20, x + 20, y + 20)
@@ -23,7 +23,7 @@ class Node:
       i += 1
 
   def connect(self, other):
-    id = self.canvas.create_line(self.get_position_list(), other.get_position(), fill="black", width=2, tags="line")
+    id = self.canvas.create_line(self.get_position_list(), other.get_position_list(), fill="black", width=2, tags="line")
     self.connections.append(other)
     self.connection_ids.append(id)
     other.connections.append(self)
@@ -32,11 +32,11 @@ class Node:
   def get_position_np(self):
     return self.coords
 
-  def get_position_list(self):
-    return self.coords[0], self.coords[1]
+  def get_position_list(self) -> list[int]:
+    return [self.coords[0], self.coords[1]]
 
 class InteractiveNodeSystem:
-  def __init__(self, root):
+  def __init__(self, root: tk.Tk):
     self.root = root
     self.root.title("Interactive Node System")
 
@@ -51,13 +51,14 @@ class InteractiveNodeSystem:
     self.nodes = []
     self.selected_nodes = []
 
-  def clear_selected_nodes(self, thing=None):
+  def clear_selected_nodes(self, doNotUseThis=None):
     self.selected_nodes.clear()
 
-  def create_node(self, event):
+  def create_node(self, event) -> Node:
     new_node = Node(self.canvas, event.x, event.y)
     self.nodes.append(new_node)
     #self.redraw_all()
+    return new_node
 
   def grab_node(self, event):
     self.clear_selected_nodes()
