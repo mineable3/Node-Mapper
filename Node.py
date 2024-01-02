@@ -2,13 +2,14 @@ import tkinter
 import numpy as np
 
 class Node:
-  def __init__(self, canvas: tkinter.Canvas, x: int, y: int, velocity: tuple):
+  def __init__(self, canvas: tkinter.Canvas, x: int, y: int, velocity: tuple = [0,0]):
     self.canvas = canvas
     self.coords = np.array([x, y])
     self.body_id = canvas.create_oval(x - 20, y - 20, x + 20, y + 20, fill="blue", tags="node")
     self.connections = list[Node]()
     self.connection_ids = list[int]()
     self.velocity = np.array(velocity)
+    #canvas.create_polygon() draw velocity arrow here
 
   def move(self, x: int, y: int):
     self.coords[0] = x
@@ -32,3 +33,12 @@ class Node:
 
   def get_position_list(self) -> list[int]:
     return [self.coords[0], self.coords[1]]
+
+  def get_velocity_np(self):
+    return self.velocity
+
+  def get_velocity_list(self) -> list[float]:
+    return [self.velocity[0], self.velocity[1]]
+
+  def add_to_velocity(self, vector):
+    self.velocity += vector
