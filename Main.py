@@ -17,10 +17,8 @@ class Node:
     self.coords[1] = y
     self.canvas.coords(self.body_id, x - 20, y - 20, x + 20, y + 20)
 
-    i = 0
-    for other in self.connections:
+    for i, other in enumerate(self.connections):
       self.canvas.coords(self.connection_ids[i], x, y, other.get_position_np()[0], other.get_position_np()[1])
-      i += 1
 
   def connect(self, other):
     id = self.canvas.create_line(self.get_position_np()[0], self.get_position_np()[1],
