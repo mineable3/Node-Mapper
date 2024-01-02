@@ -6,8 +6,6 @@ class Node:
   def __init__(self, canvas: tk.Canvas, x: int, y: int):
     self.canvas = canvas
     self.coords = np.array([x, y])
-    self.x = x
-    self.y = y
     self.body_id = canvas.create_oval(x - 20, y - 20, x + 20, y + 20, fill="blue", tags="node")
     self.connections = list[Node]()
     self.connection_ids = list[int]()
