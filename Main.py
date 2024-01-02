@@ -3,12 +3,13 @@ import numpy as np
 from math import sqrt
 
 class Node:
-  def __init__(self, canvas: tk.Canvas, x: int, y: int):
+  def __init__(self, canvas: tk.Canvas, x: int, y: int, velocity: tuple):
     self.canvas = canvas
     self.coords = np.array([x, y])
     self.body_id = canvas.create_oval(x - 20, y - 20, x + 20, y + 20, fill="blue", tags="node")
     self.connections = list[Node]()
     self.connection_ids = list[int]()
+    self.velocity = np.array(velocity)
 
   def move(self, x: int, y: int):
     self.coords[0] = x
