@@ -1,9 +1,11 @@
 import tkinter as tk
+import numpy as np
 from math import sqrt
 
 class Node:
   def __init__(self, canvas, x, y):
     self.canvas = canvas
+    self.coords = np.array([x, y])
     self.x = x
     self.y = y
     self.body_id = canvas.create_oval(x - 20, y - 20, x + 20, y + 20, fill="blue", tags="node")
@@ -11,8 +13,8 @@ class Node:
     self.connection_ids = list()
 
   def move(self, x, y):
-    self.x = x
-    self.y = y
+    self.coords[0] = x
+    self.coords[1] = y
     self.canvas.coords(self.body_id, x - 20, y - 20, x + 20, y + 20)
 
     i = 0
@@ -21,14 +23,17 @@ class Node:
       i += 1
 
   def connect(self, other):
-    id = self.canvas.create_line(self.get_position(), other.get_position(), fill="black", width=2, tags="line")
+    id = self.canvas.create_line(self.get_position_list(), other.get_position(), fill="black", width=2, tags="line")
     self.connections.append(other)
     self.connection_ids.append(id)
     other.connections.append(self)
     other.connection_ids.append(id)
 
-  def get_position(self):
-    return self.x, self.y
+  def get_position_np(self):
+    return self.coords
+
+  def get_position_list(self):
+    return self.coords[0], self.coords[1]
 
 class InteractiveNodeSystem:
   def __init__(self, root):
@@ -77,7 +82,7 @@ class InteractiveNodeSystem:
 
   def get_clicked_node(self, event):
     for node in self.nodes:
-      coords = node.get_position()
+      coords = node.get_position_np()
       distance = sqrt((event.x - coords[0]) ** 2 + (event.y - coords[1]) ** 2)
       if distance < 20:
         return node
@@ -90,7 +95,7 @@ class InteractiveNodeSystem:
                    node.get_position()[0] + 20, node.get_position()[1] + 20,
                    fill="blue", tags="node")
       for connected_node in node.connections:
-        self.canvas.create_line(node.get_position(), connected_node.get_position(),
+        self.canvas.create_line(node.get_position_list(), connected_node.get_position_list(),
                     fill="black", width=2, tags="line")
 
   def mainloop(self):
