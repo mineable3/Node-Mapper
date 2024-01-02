@@ -9,8 +9,8 @@ class Node:
     self.x = x
     self.y = y
     self.body_id = canvas.create_oval(x - 20, y - 20, x + 20, y + 20, fill="blue", tags="node")
-    self.connections = list()
-    self.connection_ids = list()
+    self.connections = list[Node]()
+    self.connection_ids = list[int]()
 
   def move(self, x: int, y: int):
     self.coords[0] = x
@@ -19,11 +19,13 @@ class Node:
 
     i = 0
     for other in self.connections:
-      self.canvas.coords(self.connection_ids[i], x, y, other.x, other.y)
+      self.canvas.coords(self.connection_ids[i], x, y, other.get_position_np()[0], other.get_position_np()[1])
       i += 1
 
   def connect(self, other):
-    id = self.canvas.create_line(self.get_position_list(), other.get_position_list(), fill="black", width=2, tags="line")
+    id = self.canvas.create_line(self.get_position_np()[0], self.get_position_np()[1],
+                      other.get_position_np()[0], other.get_position_np()[1],
+                      fill="black", width=2, tags="line")
     self.connections.append(other)
     self.connection_ids.append(id)
     other.connections.append(self)
@@ -48,8 +50,8 @@ class InteractiveNodeSystem:
     self.canvas.bind("<ButtonRelease-2>", self.clear_selected_nodes)
     self.canvas.bind("<Button-3>", self.connect_nodes)
 
-    self.nodes = []
-    self.selected_nodes = []
+    self.nodes = list[Node]()
+    self.selected_nodes = list[Node]()
 
   def clear_selected_nodes(self, doNotUseThis=None):
     self.selected_nodes.clear()
@@ -92,8 +94,8 @@ class InteractiveNodeSystem:
   def redraw_all(self):
     self.canvas.delete("all")
     for node in self.nodes:
-      self.canvas.create_oval(node.get_position()[0] - 20, node.get_position()[1] - 20,
-                   node.get_position()[0] + 20, node.get_position()[1] + 20,
+      self.canvas.create_oval(node.get_position_np()[0] - 20, node.get_position_np()[1] - 20,
+                   node.get_position_np()[0] + 20, node.get_position_np()[1] + 20,
                    fill="blue", tags="node")
       for connected_node in node.connections:
         self.canvas.create_line(node.get_position_list(), connected_node.get_position_list(),
