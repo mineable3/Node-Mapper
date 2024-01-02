@@ -55,7 +55,6 @@ class InteractiveNodeSystem:
   def create_node(self, event) -> Node:
     new_node = Node(self.canvas, event.x, event.y)
     self.nodes.append(new_node)
-    #self.redraw_all()
     return new_node
 
   def grab_node(self, event):
@@ -86,16 +85,6 @@ class InteractiveNodeSystem:
       if distance < 20:
         return node
     return None
-
-  def redraw_all(self):
-    self.canvas.delete("all")
-    for node in self.nodes:
-      self.canvas.create_oval(node.get_position_np()[0] - 20, node.get_position_np()[1] - 20,
-                   node.get_position_np()[0] + 20, node.get_position_np()[1] + 20,
-                   fill="blue", tags="node")
-      for connected_node in node.connections:
-        self.canvas.create_line(node.get_position_list(), connected_node.get_position_list(),
-                    fill="black", width=2, tags="line")
 
   def mainloop(self):
     self.root.mainloop()
