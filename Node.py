@@ -57,18 +57,24 @@ class Node:
         xDiff = other.coords[0] - self.coords[0]
         yDiff = other.coords[1] - self.coords[1]
 
-        xDiff *= 0.1
-        yDiff *= 0.1
+        xDiff *= 0.01
+        yDiff *= 0.01
 
         if(xDiff > 10):
           xDiff = 10
+        elif(xDiff < -10):
+          xDiff = -10
+
         if(yDiff > 10):
           yDiff = 10
+        elif(yDiff < -10):
+          yDiff = -10
 
-        if(xDiff < 5):
-          xDiff = 0
-        if(yDiff < 5):
-          yDiff = 0
+        # if(math.fabs(xDiff) < 1):
+        #   xDiff = -1 / xDiff
+
+        # if(math.fabs(yDiff) < 1):
+        #   yDiff = -1 / yDiff
 
         x += int(xDiff)
         y += int(yDiff)

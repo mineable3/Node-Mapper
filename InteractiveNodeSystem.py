@@ -60,7 +60,8 @@ class InteractiveNodeSystem:
   def velocityMethod(self):
     while(True):
       for node in self.nodes:
-        node.step_velocity()
+        if(self.selected_nodes.count(node) == 0):
+          node.step_velocity()
 
   def mainloop(self):
     velocityThread = threading.Thread(target=self.velocityMethod)
