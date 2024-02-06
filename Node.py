@@ -1,8 +1,9 @@
 import tkinter
 import numpy as np
+import math
 
 class Node:
-  def __init__(self, canvas: tkinter.Canvas, x: int, y: int, velocity: tuple = [0,0]):
+  def __init__(self, canvas: tkinter.Canvas, x: int, y: int, velocity: tuple = [0.0,0.0]):
     self.canvas = canvas
     self.coords = np.array([x, y])
     self.body_id = canvas.create_oval(x - 20, y - 20, x + 20, y + 20, fill="blue", tags="node")
@@ -28,6 +29,10 @@ class Node:
     other.connections.append(self)
     other.connection_ids.append(id)
 
+    velocity = np.array((other.coords[0]-self.coords[0], other.coords[1]-self.coords[1]))
+
+    self.add_to_velocity(velocity)
+
   def get_position_np(self):
     return self.coords
 
@@ -42,3 +47,12 @@ class Node:
 
   def add_to_velocity(self, vector):
     self.velocity += vector
+
+  def step_velocity(self):
+    x = self.coords[0] + (self.velocity[0] * 0.1)
+    y = self.coords[1] + (self.velocity[1] * 0.1)
+
+    self.velocity[0] = int(self.velocity[0] * 0.9)
+    self.velocity[1] = int(self.velocity[1] * 0.9)
+    print(self.velocity)
+    self.move(x, y)

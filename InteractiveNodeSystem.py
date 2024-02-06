@@ -1,11 +1,13 @@
 from math import sqrt
 from Node import Node
 import tkinter as tk
+import threading
 
 class InteractiveNodeSystem:
   def __init__(self, root: tk.Tk):
     self.root = root
     self.root.title("Interactive Node System")
+    self.root.geometry("=800x600+300+20")
 
     self.canvas = tk.Canvas(root, width=800, height=600, bg="white")
     self.canvas.pack(expand=tk.YES, fill=tk.BOTH)
@@ -22,7 +24,7 @@ class InteractiveNodeSystem:
     self.selected_nodes.clear()
 
   def create_node(self, event) -> Node:
-    new_node = Node(self.canvas, event.x, event.y)
+    new_node = Node(self.canvas, event.x, event.y, (0.0,0.0))
     self.nodes.append(new_node)
     return new_node
 
@@ -55,5 +57,13 @@ class InteractiveNodeSystem:
         return node
     return None
 
+  def velocityMethod(self):
+    while(True):
+      for node in self.nodes:
+        node.step_velocity()
+
   def mainloop(self):
+    velocityThread = threading.Thread(target=self.velocityMethod)
+    velocityThread.start()
+
     self.root.mainloop()
