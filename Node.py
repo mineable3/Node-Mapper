@@ -29,9 +29,9 @@ class Node:
     other.connections.append(self)
     other.connection_ids.append(id)
 
-    velocity = np.array((other.coords[0]-self.coords[0], other.coords[1]-self.coords[1]))
+    # velocity = np.array((other.coords[0]-self.coords[0], other.coords[1]-self.coords[1]))
 
-    self.add_to_velocity(velocity)
+    # self.add_to_velocity(velocity)
 
   def get_position_np(self):
     return self.coords
@@ -49,10 +49,28 @@ class Node:
     self.velocity += vector
 
   def step_velocity(self):
-    x = self.coords[0] + (self.velocity[0] * 0.1)
-    y = self.coords[1] + (self.velocity[1] * 0.1)
+    x = self.coords[0]
+    y = self.coords[1]
 
-    self.velocity[0] = int(self.velocity[0] * 0.9)
-    self.velocity[1] = int(self.velocity[1] * 0.9)
-    print(self.velocity)
+    if(self.connections.__len__ != 0):
+      for other in self.connections:
+        xDiff = other.coords[0] - self.coords[0]
+        yDiff = other.coords[1] - self.coords[1]
+
+        xDiff *= 0.1
+        yDiff *= 0.1
+
+        if(xDiff > 10):
+          xDiff = 10
+        if(yDiff > 10):
+          yDiff = 10
+
+        if(xDiff < 5):
+          xDiff = 0
+        if(yDiff < 5):
+          yDiff = 0
+
+        x += int(xDiff)
+        y += int(yDiff)
+
     self.move(x, y)

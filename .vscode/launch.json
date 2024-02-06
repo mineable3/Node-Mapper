@@ -11,6 +11,14 @@
       "program": "C:/Users/emmet/Desktop/PythonProjects/NodeMap/Main.py",
       "console": "externalTerminal",
       "justMyCode": true
+    },
+    {
+      "name": "Python: Current File",
+      "type": "python",
+      "request": "launch",
+      "program": "C:/Users/emmet/Desktop/PythonProjects/NodeMap/Main.py",
+      "console": "externalTerminal",
+      "justMyCode": true
     }
   ]
 }
