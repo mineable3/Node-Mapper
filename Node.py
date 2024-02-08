@@ -57,26 +57,31 @@ class Node:
         xDiff = other.coords[0] - self.coords[0]
         yDiff = other.coords[1] - self.coords[1]
 
-        xDiff *= 0.01
-        yDiff *= 0.01
+        #Attraction
+        if(xDiff > 50):
+          xDiff = 50
+        elif(xDiff < -50):
+          xDiff = -50
 
-        if(xDiff > 10):
-          xDiff = 10
-        elif(xDiff < -10):
+        if(yDiff > 50):
+          yDiff = 50
+        elif(yDiff < -50):
+          yDiff = -50
+
+        #Repulsion
+        if(xDiff < 20 and xDiff > 0):
           xDiff = -10
+        elif(xDiff > -20 and xDiff < 0):
+          xDiff = 10
 
-        if(yDiff > 10):
-          yDiff = 10
-        elif(yDiff < -10):
+        if(yDiff < 20 and yDiff > 0):
           yDiff = -10
+        elif(yDiff > -20 and yDiff < 0):
+          yDiff = 10
 
-        # if(math.fabs(xDiff) < 1):
-        #   xDiff = -1 / xDiff
+        x += int(xDiff * 0.1)
+        y += int(yDiff * 0.1)
 
-        # if(math.fabs(yDiff) < 1):
-        #   yDiff = -1 / yDiff
-
-        x += int(xDiff)
-        y += int(yDiff)
+        print(xDiff)
 
     self.move(x, y)
