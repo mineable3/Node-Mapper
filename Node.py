@@ -2,6 +2,8 @@ import tkinter
 import numpy as np
 import math
 
+from Constants import Constants
+
 class Node:
   def __init__(self, canvas: tkinter.Canvas, x: int, y: int, velocity: tuple = [0.0,0.0]):
     self.canvas = canvas
@@ -60,7 +62,7 @@ class Node:
         yDiff = other.coords[1] - self.coords[1]
 
         #Attraction
-        if(math.sqrt((math.fabs(xDiff)**2) + (math.fabs(yDiff)**2)) > 50):
+        if(math.sqrt((math.fabs(xDiff)**2) + (math.fabs(yDiff)**2)) > Constants.attractionMax):
           if(xDiff > 50):
             xDiff = 50
           elif(xDiff < -50):
@@ -72,7 +74,7 @@ class Node:
             yDiff = -50
 
         #Repulsion
-        if(math.sqrt((math.fabs(xDiff)**2) + (math.fabs(yDiff)**2)) < 30):
+        if(math.sqrt((math.fabs(xDiff)**2) + (math.fabs(yDiff)**2)) < Constants.deadzoneInner):
           if(xDiff < 30 and xDiff > 0):
             xDiff = -10
           elif(xDiff > -30 and xDiff < 0):
@@ -84,7 +86,7 @@ class Node:
             yDiff = 10
 
         #Dead Zone
-        if(math.sqrt((math.fabs(xDiff)**2) + (math.fabs(yDiff)**2)) <= 40 and math.sqrt((math.fabs(xDiff)**2) + (math.fabs(yDiff)**2)) >= 30):
+        if(math.sqrt((math.fabs(xDiff)**2) + (math.fabs(yDiff)**2)) <= Constants.deadzoneOuter and math.sqrt((math.fabs(xDiff)**2) + (math.fabs(yDiff)**2)) >= Constants.deadzoneInner):
           xDiff = 0
           yDiff = 0
 
