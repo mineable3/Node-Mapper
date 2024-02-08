@@ -60,36 +60,32 @@ class Node:
         yDiff = other.coords[1] - self.coords[1]
 
         #Attraction
-        if(xDiff > 50):
-          xDiff = 50
-        elif(xDiff < -50):
-          xDiff = -50
+        if(math.sqrt((math.fabs(xDiff)**2) + (math.fabs(yDiff)**2)) > 50):
+          if(xDiff > 50):
+            xDiff = 50
+          elif(xDiff < -50):
+            xDiff = -50
 
-        if(yDiff > 50):
-          yDiff = 50
-        elif(yDiff < -50):
-          yDiff = -50
+          if(yDiff > 50):
+            yDiff = 50
+          elif(yDiff < -50):
+            yDiff = -50
 
         #Repulsion
-        if(xDiff < 30 and xDiff > 0):
-          xDiff = -10
-        elif(xDiff > -30 and xDiff < 0):
-          xDiff = 10
+        if(math.sqrt((math.fabs(xDiff)**2) + (math.fabs(yDiff)**2)) < 30):
+          if(xDiff < 30 and xDiff > 0):
+            xDiff = -10
+          elif(xDiff > -30 and xDiff < 0):
+            xDiff = 10
 
-        if(yDiff < 30 and yDiff > 0):
-          yDiff = -10
-        elif(yDiff > -30 and yDiff < 0):
-          yDiff = 10
+          if(yDiff < 30 and yDiff > 0):
+            yDiff = -10
+          elif(yDiff > -30 and yDiff < 0):
+            yDiff = 10
 
         #Dead Zone
-        if(xDiff <= 40 and xDiff >= 30):
+        if(math.sqrt((math.fabs(xDiff)**2) + (math.fabs(yDiff)**2)) <= 40 and math.sqrt((math.fabs(xDiff)**2) + (math.fabs(yDiff)**2)) >= 30):
           xDiff = 0
-        elif(xDiff >= -40 and xDiff <= -30):
-          xDiff = 0
-
-        if(yDiff <= 40 and yDiff >= 30):
-          yDiff = 0
-        elif(yDiff >= -40 and yDiff <= -30):
           yDiff = 0
 
         x += int(xDiff * 0.1)
