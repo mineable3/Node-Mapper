@@ -48,6 +48,8 @@ class Node:
   def add_to_velocity(self, vector):
     self.velocity += vector
 
+  # should be done with pythagorean theorem because nodes can only attach in 90 or 180 degree orientations
+  # without getting weird and glitchy
   def step_velocity(self):
     x = self.coords[0]
     y = self.coords[1]
@@ -69,19 +71,28 @@ class Node:
           yDiff = -50
 
         #Repulsion
-        if(xDiff < 20 and xDiff > 0):
+        if(xDiff < 30 and xDiff > 0):
           xDiff = -10
-        elif(xDiff > -20 and xDiff < 0):
+        elif(xDiff > -30 and xDiff < 0):
           xDiff = 10
 
-        if(yDiff < 20 and yDiff > 0):
+        if(yDiff < 30 and yDiff > 0):
           yDiff = -10
-        elif(yDiff > -20 and yDiff < 0):
+        elif(yDiff > -30 and yDiff < 0):
           yDiff = 10
+
+        #Dead Zone
+        if(xDiff <= 40 and xDiff >= 30):
+          xDiff = 0
+        elif(xDiff >= -40 and xDiff <= -30):
+          xDiff = 0
+
+        if(yDiff <= 40 and yDiff >= 30):
+          yDiff = 0
+        elif(yDiff >= -40 and yDiff <= -30):
+          yDiff = 0
 
         x += int(xDiff * 0.1)
         y += int(yDiff * 0.1)
-
-        print(xDiff)
 
     self.move(x, y)
