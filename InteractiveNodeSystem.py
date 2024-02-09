@@ -1,4 +1,5 @@
 from math import sqrt
+from Constants import Constants
 from Node import Node
 import tkinter as tk
 import threading
@@ -53,7 +54,7 @@ class InteractiveNodeSystem:
     for node in self.nodes:
       coords = node.get_position_np()
       distance = sqrt((event.x - coords[0]) ** 2 + (event.y - coords[1]) ** 2)
-      if distance < 20:
+      if distance < Constants.NODE_SIZE:
         return node
     return None
 

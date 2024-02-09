@@ -8,7 +8,7 @@ class Node:
   def __init__(self, canvas: tkinter.Canvas, x: int, y: int, velocity: tuple = [0.0,0.0]):
     self.canvas = canvas
     self.coords = np.array([x, y])
-    self.body_id = canvas.create_oval(x - 20, y - 20, x + 20, y + 20, fill="blue", tags="node")
+    self.body_id = canvas.create_oval(x - Constants.NODE_SIZE, y - Constants.NODE_SIZE, x + Constants.NODE_SIZE, y + Constants.NODE_SIZE, fill="blue", tags="node")
     self.connections = list[Node]()
     self.connection_ids = list[int]()
     self.velocity = np.array(velocity)
@@ -17,7 +17,7 @@ class Node:
   def move(self, x: int, y: int):
     self.coords[0] = x
     self.coords[1] = y
-    self.canvas.coords(self.body_id, x - 20, y - 20, x + 20, y + 20)
+    self.canvas.coords(self.body_id, x - Constants.NODE_SIZE, y - Constants.NODE_SIZE, x + Constants.NODE_SIZE, y + Constants.NODE_SIZE)
 
     for i, other in enumerate(self.connections):
       self.canvas.coords(self.connection_ids[i], x, y, other.get_position_np()[0], other.get_position_np()[1])
