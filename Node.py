@@ -73,22 +73,24 @@ class Node:
           elif(yDiff < -Constants.attractionMax):
             yDiff = -Constants.attractionMax
 
-        #Repulsion
-        if(math.sqrt((math.fabs(xDiff)**2) + (math.fabs(yDiff)**2)) < Constants.deadzoneInner):
-          if(xDiff < Constants.deadzoneInner and xDiff > 0):
-            xDiff = -Constants.deadzoneInner * 0.25
-          elif(xDiff > -Constants.deadzoneInner and xDiff < 0):
-            xDiff = Constants.deadzoneInner * 0.25
-
-          if(yDiff < Constants.deadzoneInner and yDiff > 0):
-            yDiff = -Constants.deadzoneInner * 0.25
-          elif(yDiff > -Constants.deadzoneInner and yDiff < 0):
-            yDiff = Constants.deadzoneInner * 0.25
-
         #Dead Zone
         if(math.sqrt((math.fabs(xDiff)**2) + (math.fabs(yDiff)**2)) <= Constants.deadzoneOuter and math.sqrt((math.fabs(xDiff)**2) + (math.fabs(yDiff)**2)) >= Constants.deadzoneInner):
           xDiff = 0
           yDiff = 0
+
+        #Repulsion
+        if(math.sqrt((math.fabs(xDiff)**2) + (math.fabs(yDiff)**2)) < Constants.deadzoneInner):
+          if(xDiff < Constants.deadzoneInner and xDiff > 0):
+            xDiff = -Constants.deadzoneInner
+          elif(xDiff > -Constants.deadzoneInner and xDiff < 0):
+            xDiff = Constants.deadzoneInner
+
+          if(yDiff < Constants.deadzoneInner and yDiff > 0):
+            yDiff = -Constants.deadzoneInner
+          elif(yDiff > -Constants.deadzoneInner and yDiff < 0):
+            yDiff = Constants.deadzoneInner
+
+
 
         x += int(xDiff * 0.1)
         y += int(yDiff * 0.1)

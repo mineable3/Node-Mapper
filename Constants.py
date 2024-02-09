@@ -1,5 +1,5 @@
 class Constants:
-  attractionMax = 60
-  deadzoneOuter = 50
+  attractionMax = 65
+  deadzoneOuter = 60
   deadzoneInner = 40
-  NODE_SIZE = 20
+  NODE_SIZE = 15
